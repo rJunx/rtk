@@ -69,7 +69,7 @@ rtk release --release-increment-type major --post-release-increment-type minor
 
 Before cutting off a release, RTK checks that every resource is ready for release:
 
-* `keep-a-changelog` resource is ready when its latest release is an Unreleased section (`## Unreleased` or `## [Unreleased]`) with at least one change. Otherwise the release is skipped without an error, since there is nothing to release
+* `keep-a-changelog` resource is ready when its latest release is an Unreleased section (`## Unreleased` or `## [Unreleased]`) with at least one change, otherwise there is nothing to release
 * `json`, `yaml`, `toml`, `xml`, and `hcl` resources must have `params.property` configured, be parseable, and have the property with a non-empty value
 * `makefile` resource must have `params.variable` configured, and have the variable with a non-empty value
 * `text` resource must have a valid `params.regex` configured, which matches a non-empty version value

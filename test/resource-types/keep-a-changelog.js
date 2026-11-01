@@ -504,7 +504,7 @@ This is not a valid keep-a-changelog format.
       }
       resourceType.isReadyForRelease(resource, cb);
     });
-    it("should not be ready for release when Unreleased section is empty", function (done) {
+    it("should pass error when Unreleased section is empty", function (done) {
       const resource = { path: "SOMECHANGELOG.md", type: "keep-a-changelog" };
       this.mockFs
         .expects("readFile")
@@ -523,13 +523,16 @@ This is not a valid keep-a-changelog format.
 `,
         );
       function cb(err, result) {
-        assert.equal(err, null);
-        assert.equal(result, false);
+        assert.equal(
+          err.message,
+          "Unreleased section in keep-a-changelog resource SOMECHANGELOG.md has no changes",
+        );
+        assert.equal(result, undefined);
         done();
       }
       resourceType.isReadyForRelease(resource, cb);
     });
-    it("should not be ready for release when changelog has no Unreleased section", function (done) {
+    it("should pass error when changelog has no Unreleased section", function (done) {
       const resource = { path: "SOMECHANGELOG.md", type: "keep-a-changelog" };
       this.mockFs
         .expects("readFile")
@@ -546,13 +549,16 @@ This is not a valid keep-a-changelog format.
 `,
         );
       function cb(err, result) {
-        assert.equal(err, null);
-        assert.equal(result, false);
+        assert.equal(
+          err.message,
+          "keep-a-changelog resource SOMECHANGELOG.md has no Unreleased section",
+        );
+        assert.equal(result, undefined);
         done();
       }
       resourceType.isReadyForRelease(resource, cb);
     });
-    it("should not be ready for release when changelog has no release", function (done) {
+    it("should pass error when changelog has no release", function (done) {
       const resource = { path: "SOMECHANGELOG.md", type: "keep-a-changelog" };
       this.mockFs
         .expects("readFile")
@@ -566,8 +572,11 @@ This is not a valid keep-a-changelog format.
 `,
         );
       function cb(err, result) {
-        assert.equal(err, null);
-        assert.equal(result, false);
+        assert.equal(
+          err.message,
+          "keep-a-changelog resource SOMECHANGELOG.md has no Unreleased section",
+        );
+        assert.equal(result, undefined);
         done();
       }
       resourceType.isReadyForRelease(resource, cb);

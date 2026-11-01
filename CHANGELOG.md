@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 ### Added
 - Add isReadyForRelease check to all resource types, run before cutting off a release
-- Skip release when keep-a-changelog resource has no Unreleased changes
+- Fail release when keep-a-changelog resource has no Unreleased changes
 - Add xml resource type, e.g. for managing version in Maven pom.xml
 
 ### Fixed

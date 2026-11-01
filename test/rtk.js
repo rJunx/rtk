@@ -144,23 +144,21 @@ describe("rtk - release", function () {
     });
   });
 
-  it("should skip release steps without error when a resource is not ready for release", function (done) {
+  it("should pass error to callback and skip release steps when a resource is not ready for release", function (done) {
     const self = this;
     this.isReadyForRelease.onSecondCall().callsArgWith(1, null, false);
-    this.rtk.release("rtk", "semver", "git", function (err, results) {
-      assert.isUndefined(err);
-      assert.isUndefined(results);
+    this.rtk.release("rtk", "semver", "git", function (err) {
+      assert.equals(
+        err.message,
+        "Release failed because not all resources are ready for release",
+      );
       assert.equals(self.isReadyForRelease.callCount, 2);
       assert.equals(self.getVersion.callCount, 0);
       assert.equals(self.calls, []);
-      assert.equals(bag.logStepItemWarning.callCount, 2);
+      assert.equals(bag.logStepItemWarning.callCount, 1);
       assert.equals(
         bag.logStepItemWarning.firstCall.args[0],
         "someresourcetype resource located at somefile2 is not ready for release",
-      );
-      assert.equals(
-        bag.logStepItemWarning.secondCall.args[0],
-        "Skipping release because not all resources are ready for release",
       );
       done();
     });
