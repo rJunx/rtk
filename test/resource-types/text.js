@@ -196,6 +196,28 @@ describe("text", function () {
       }
       resourceType.isReadyForRelease(resource, cb);
     });
+    it("should pass error when regex is invalid", function (done) {
+      const resource = {
+        path: "somefile.txt",
+        type: "text",
+        params: { regex: "(\\d+" },
+      };
+      this.mockFs
+        .expects("readFile")
+        .once()
+        .withExactArgs("somefile.txt", "UTF-8", sinon.match.func)
+        .callsArgWith(2, null, ' version = "0.0.0" ');
+      function cb(err, result) {
+        assert.ok(
+          err.message.startsWith(
+            "Invalid regex (\\d+ for text resource somefile.txt. Error: Invalid regular expression",
+          ),
+        );
+        assert.equal(result, undefined);
+        done();
+      }
+      resourceType.isReadyForRelease(resource, cb);
+    });
     it("should be ready for release when regex matches", function (done) {
       const resource = {
         path: "somefile.txt",
